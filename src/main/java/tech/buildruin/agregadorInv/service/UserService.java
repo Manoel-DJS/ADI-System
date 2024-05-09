@@ -2,6 +2,7 @@ package tech.buildruin.agregadorInv.service;
 
 import org.springframework.stereotype.Service;
 import tech.buildruin.agregadorInv.controller.CreateUserDto;
+import tech.buildruin.agregadorInv.controller.UpdateUserDto;
 import tech.buildruin.agregadorInv.entity.User;
 import tech.buildruin.agregadorInv.repository.UserRepository;
 
@@ -43,6 +44,26 @@ public class UserService {
 
     public List<User> ListUsers(){
         return userRepository.findAll();
+    }
+
+    public void uptadeUserById(String userId,
+                               UpdateUserDto updateUserDto){
+        var id = UUID.fromString(userId);
+
+        var userEntity = userRepository.findById(id);
+
+        if(userEntity.isPresent()){
+            var user = userEntity.get();
+
+            if (updateUserDto.username() != null){
+                user.setUsername(updateUserDto.username());
+            }
+
+            if(updateUserDto.password() != null){
+                user.setPassword(updateUserDto.password());
+            }
+            userRepository.save(user);
+        }
     }
 
     public void deleteById(String userId) {
