@@ -6,6 +6,7 @@ import tech.buildruin.agregadorInv.entity.User;
 import tech.buildruin.agregadorInv.service.UserService;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/users")
@@ -24,6 +25,7 @@ public class UserController {
         return ResponseEntity.created(URI.create("/v1/users/" + userId.toString())).build();
     }
 
+    //Consulta de usuários pelo  ID
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable("userId") String userId){
         var user = userService.getUserById(userId);
@@ -33,5 +35,11 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
 
+    }
+
+    @GetMapping
+    public ResponseEntity<List<User>> listUsers(){
+        var users = userService.ListUsers();
+        return ResponseEntity.ok(users);
     }
 }
