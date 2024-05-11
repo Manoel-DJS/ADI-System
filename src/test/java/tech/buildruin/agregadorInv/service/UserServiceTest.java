@@ -14,6 +14,7 @@ import tech.buildruin.agregadorInv.entity.User;
 import tech.buildruin.agregadorInv.repository.UserRepository;
 
 import java.time.Instant;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,6 +38,9 @@ class UserServiceTest {
 
     @Captor
     private ArgumentCaptor<User> userArgumentCaptor;
+
+    @Captor
+    private ArgumentCaptor<UUID> uuidArgumentCaptor;
 
     @Nested
     class createUser{
@@ -96,13 +100,50 @@ class UserServiceTest {
     class getUserById{
 
         @Test
-        @DisplayName("Should get user by id with success")
-        void shouldGetByIdWithSuccess() {
+        @DisplayName("Should get user by id with success when optinoal is present")
+        void shouldGetByIdWithSuccessOptionalIsPresent() {
 
             // Arrange
+            var user = new User(
+                    UUID.randomUUID(),
+                    "username",
+                    "email@email.com",
+                    "password",
+                    Instant.now(),
+                    null
+            );
+            doReturn(Optional.of(user)).
+                    when(userRepository).
+                    findById(uuidArgumentCaptor.capture());
+
             // Act
+            var output = userService.getUserById(user.getUserId().toString());
+
             // Assert
+            assertTrue(output.isPresent());
+            assertEquals(user.getUserId(), uuidArgumentCaptor.getValue());
 
         }
+
+        @Test
+        @DisplayName("Should get user by id with success when optinoal is Empty")
+        void shouldGetByIdWithSuccessOptionalIsEmpty() {
+
+            // Arrange
+            var userId = UUID.randomUUID();
+            doReturn(Optional.empty()).when(userRepository).findById(uuidArgumentCaptor.capture());
+
+            // Act
+            var output = userService.getUserById(userId.toString());
+
+            // Assert
+            assertTrue(output.isEmpty());
+            assertEquals(userId, uuidArgumentCaptor.getValue());
+
+        }
+
+
     }
+
+
 }
