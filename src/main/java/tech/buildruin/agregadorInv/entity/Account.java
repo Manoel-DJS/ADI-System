@@ -17,6 +17,10 @@ public class Account {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToOne(mappedBy = "account")
+    @PrimaryKeyJoinColumn       // Isso promove que a primarykey da entidade account para a tabela de billing address
+    private BillingAddress billingAddress;
+
     @Column(name = "description")
     private String description;
 
