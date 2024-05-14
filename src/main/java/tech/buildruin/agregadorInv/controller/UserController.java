@@ -2,6 +2,9 @@ package tech.buildruin.agregadorInv.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tech.buildruin.agregadorInv.controller.dto.CreateAccountDto;
+import tech.buildruin.agregadorInv.controller.dto.CreateUserDto;
+import tech.buildruin.agregadorInv.controller.dto.UpdateUserDto;
 import tech.buildruin.agregadorInv.entity.User;
 import tech.buildruin.agregadorInv.service.UserService;
 
@@ -56,4 +59,12 @@ public class UserController {
         userService.deleteById(userId);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/{userId}/accounts")
+    public ResponseEntity<Void> deleteById(@PathVariable("userId") String userId,
+                                           @RequestBody CreateAccountDto createAccountDto){
+        userService.createAccount(userId, createAccountDto);
+        return ResponseEntity.ok().build();
+    }
+
 }

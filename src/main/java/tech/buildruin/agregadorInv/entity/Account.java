@@ -18,7 +18,7 @@ public class Account {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne(mappedBy = "account")
+    @OneToOne(cascade = CascadeType.ALL,mappedBy = "account")
     @PrimaryKeyJoinColumn       // Isso promove que a primarykey da entidade account para a tabela de billing address
     private BillingAddress billingAddress;
 
@@ -33,9 +33,18 @@ public class Account {
 
     }
 
+    // Depois deleto
     public Account(UUID accountId, String description) {
         this.accountId = accountId;
         this.description = description;
+    }
+
+    public Account(UUID accountId, User user, BillingAddress billingAddress, String description, List<AccountStock> accountStocks) {
+        this.accountId = accountId;
+        this.user = user;
+        this.billingAddress = billingAddress;
+        this.description = description;
+        this.accountStocks = accountStocks;
     }
 
     public UUID getAccountId() {

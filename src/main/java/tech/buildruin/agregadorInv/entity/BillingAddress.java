@@ -11,7 +11,7 @@ public class BillingAddress {
     @Column(name = "account_id")
     private UUID id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @MapsId
     @JoinColumn(name = "account_id")
     private Account account;
@@ -26,8 +26,16 @@ public class BillingAddress {
 
     }
 
+    // construtor para apagar dps
     public BillingAddress(UUID id, String street, Integer number) {
         this.id = id;
+        this.street = street;
+        this.number = number;
+    }
+
+    public BillingAddress(UUID id, Account account, String street, Integer number) {
+        this.id = id;
+        this.account = account;
         this.street = street;
         this.number = number;
     }
