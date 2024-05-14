@@ -3,6 +3,7 @@ package tech.buildruin.agregadorInv.service;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import tech.buildruin.agregadorInv.controller.dto.AccountResponseDto;
 import tech.buildruin.agregadorInv.controller.dto.CreateAccountDto;
 import tech.buildruin.agregadorInv.controller.dto.CreateUserDto;
 import tech.buildruin.agregadorInv.controller.dto.UpdateUserDto;
@@ -114,5 +115,18 @@ public class UserService {
         );
 
         billingAddressRepository.save(billingAddress);
+    }
+
+    public List<AccountResponseDto> listAccounts(String userId) {
+
+        var user = userRepository.findById(UUID.fromString(userId)).
+                orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return user.getAccounts().
+                stream().
+                map(ac ->
+                        new AccountResponseDto(ac.getAccountId().toString(),
+                                ac.getDescription()))
+                .toList();
     }
 }
