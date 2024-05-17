@@ -1,5 +1,6 @@
 package tech.buildruin.agregadorInv.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,6 +12,7 @@ public class AccountStock {
     @ManyToOne
     @MapsId("accountId")
     @JoinColumn(name = "account_id")
+    @JsonBackReference
     private Account account;
 
     @ManyToOne

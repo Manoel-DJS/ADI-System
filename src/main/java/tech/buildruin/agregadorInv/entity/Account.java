@@ -1,5 +1,6 @@
 package tech.buildruin.agregadorInv.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -25,7 +26,9 @@ public class Account {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "account")
+
+    @OneToMany(mappedBy = "account") //
+    @JsonManagedReference
     private List<AccountStock> accountStocks;
 
 
@@ -70,5 +73,21 @@ public class Account {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public BillingAddress getBillingAddress() {
+        return billingAddress;
+    }
+
+    public void setBillingAddress(BillingAddress billingAddress) {
+        this.billingAddress = billingAddress;
+    }
+
+    public List<AccountStock> getAccountStocks() {
+        return accountStocks;
+    }
+
+    public void setAccountStocks(List<AccountStock> accountStocks) {
+        this.accountStocks = accountStocks;
     }
 }
