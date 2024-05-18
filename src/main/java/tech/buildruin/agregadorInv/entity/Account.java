@@ -14,6 +14,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID accountId;
 
+    // OK
 
     @ManyToOne
     @JoinColumn(name = "user_id")
