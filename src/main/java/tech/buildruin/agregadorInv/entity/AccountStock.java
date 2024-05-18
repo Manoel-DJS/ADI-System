@@ -12,6 +12,7 @@ public class AccountStock {
     @ManyToOne
     @MapsId("accountId")
     @JoinColumn(name = "account_id")
+    @JsonBackReference
     private Account account;
 
     @ManyToOne

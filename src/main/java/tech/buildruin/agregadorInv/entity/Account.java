@@ -20,14 +20,16 @@ public class Account {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL,mappedBy = "account")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "account")
     @PrimaryKeyJoinColumn       // Isso promove que a primarykey da entidade account para a tabela de billing address
     private BillingAddress billingAddress;
 
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "account")
+
+    @OneToMany(mappedBy = "account") //
+    @JsonManagedReference
     private List<AccountStock> accountStocks;
 
 
@@ -72,5 +74,21 @@ public class Account {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public BillingAddress getBillingAddress() {
+        return billingAddress;
+    }
+
+    public void setBillingAddress(BillingAddress billingAddress) {
+        this.billingAddress = billingAddress;
+    }
+
+    public List<AccountStock> getAccountStocks() {
+        return accountStocks;
+    }
+
+    public void setAccountStocks(List<AccountStock> accountStocks) {
+        this.accountStocks = accountStocks;
     }
 }
