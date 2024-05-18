@@ -2,9 +2,11 @@ package tech.buildruin.agregadorInv.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tech.buildruin.agregadorInv.controller.dto.AccountResponseDto;
 import tech.buildruin.agregadorInv.controller.dto.CreateAccountDto;
 import tech.buildruin.agregadorInv.controller.dto.CreateUserDto;
 import tech.buildruin.agregadorInv.controller.dto.UpdateUserDto;
+import tech.buildruin.agregadorInv.entity.Account;
 import tech.buildruin.agregadorInv.entity.User;
 import tech.buildruin.agregadorInv.service.UserService;
 
@@ -61,10 +63,16 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/accounts")
-    public ResponseEntity<Void> deleteById(@PathVariable("userId") String userId,
+    public ResponseEntity<Void> getAccountById(@PathVariable("userId") String userId,
                                            @RequestBody CreateAccountDto createAccountDto){
         userService.createAccount(userId, createAccountDto);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{userId}/accounts")
+    public ResponseEntity<List<AccountResponseDto>> listAccounts(@PathVariable("userId") String userId){
+        var accounts = userService.listAccounts(userId);
+        return ResponseEntity.ok(accounts);
     }
 
 }
