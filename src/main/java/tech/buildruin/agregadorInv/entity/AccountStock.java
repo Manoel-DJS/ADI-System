@@ -1,5 +1,6 @@
 package tech.buildruin.agregadorInv.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
