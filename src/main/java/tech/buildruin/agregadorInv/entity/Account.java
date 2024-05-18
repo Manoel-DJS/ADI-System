@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name= "tb-accounts")
+@Table(name= "tb_accounts")
 public class Account {
     @Id
     @Column(name = "account_id")
@@ -19,7 +19,7 @@ public class Account {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL,mappedBy = "account")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "account")
     @PrimaryKeyJoinColumn       // Isso promove que a primarykey da entidade account para a tabela de billing address
     private BillingAddress billingAddress;
 
