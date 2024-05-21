@@ -37,11 +37,6 @@ public class Account {
 
     }
 
-    // Depois deleto
-    public Account(UUID accountId, String description) {
-        this.accountId = accountId;
-        this.description = description;
-    }
 
     public Account(UUID accountId, User user, BillingAddress billingAddress, String description, List<AccountStock> accountStocks) {
         this.accountId = accountId;
