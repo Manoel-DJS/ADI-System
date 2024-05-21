@@ -1,8 +1,11 @@
 package tech.buildruin.agregadorInv.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.server.ResponseStatusException;
+import tech.buildruin.agregadorInv.client.BrapiClient;
 import tech.buildruin.agregadorInv.controller.dto.AccountStockResponseDto;
 import tech.buildruin.agregadorInv.controller.dto.AssociateAccountStockDto;
 import tech.buildruin.agregadorInv.entity.AccountStock;
@@ -16,14 +19,19 @@ import java.util.UUID;
 
 @Service
 public class AccountService {
+    @Value("#{environment.TOKEN}")
+    private String TOKEN;
     private AccountRepository accountRepository;
     private StockRepository stockRepository;
     private AccountStockRepository accountStockRepository;
 
-    public AccountService(AccountRepository accountRepository, StockRepository stockRepository, AccountStockRepository accountStockRepository) {
+    private BrapiClient brapiClient;
+
+    public AccountService(AccountRepository accountRepository, StockRepository stockRepository, AccountStockRepository accountStockRepository, BrapiClient brapiClient) {
         this.accountRepository = accountRepository;
         this.stockRepository = stockRepository;
         this.accountStockRepository = accountStockRepository;
+        this.brapiClient = brapiClient;
     }
 
     public void associateStock(String accountId, AssociateAccountStockDto dto) {
@@ -54,6 +62,18 @@ public class AccountService {
 
         return account.getAccountStocks().stream().
                 map(as -> new AccountStockResponseDto
-                        (as.getStock().getStockId(), as.getQuantity(),0.0)).toList();
+                        (as.getStock().getStockId(), as.getQuantity(),
+                                GetTotal(as.getQuantity(), as.getStock().getStockId())
+                        )).
+                toList();
+    }
+
+    private double GetTotal(Integer quantity, String stockId) {
+        var response = brapiClient.getQuote(TOKEN, stockId);
+
+        var price = response.results().get(0).regularMarketPrice();
+        // var price = response.results().getFirst().regularMarketPrice(); so funfa no java 21
+
+        return quantity * price;
     }
 }
