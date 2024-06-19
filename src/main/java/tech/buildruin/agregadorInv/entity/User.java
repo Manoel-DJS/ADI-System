@@ -1,5 +1,6 @@
 package tech.buildruin.agregadorInv.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -31,6 +32,8 @@ public class User {
 
     // referência a própria entidade para a próxima = conceito de banco de dados
     // 1 user para várias contas
+
+    @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private List<Account> accounts;
 

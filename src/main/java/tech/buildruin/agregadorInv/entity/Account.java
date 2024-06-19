@@ -1,5 +1,6 @@
 package tech.buildruin.agregadorInv.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -16,6 +17,7 @@ public class Account {
 
     // OK
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -27,7 +29,7 @@ public class Account {
     @Column(name = "description")
     private String description;
 
-
+    // Corrigir Json infinito
     @OneToMany(mappedBy = "account") //
     @JsonManagedReference
     private List<AccountStock> accountStocks;
